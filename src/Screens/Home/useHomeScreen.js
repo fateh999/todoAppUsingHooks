@@ -18,6 +18,12 @@ function useHomeScreen() {
     setTodo('');
   }
 
+  function deleteTodo(index) {
+    const tempTodos = [...todos];
+    tempTodos.splice(index, 1);
+    setTodos([...tempTodos]);
+  }
+
   const styles = StyleSheet.create({
     bodyStyle: {
       padding: 15,
@@ -44,6 +50,7 @@ function useHomeScreen() {
     setTodo,
     addTodo,
     todo,
+    deleteTodo,
   };
 }
 

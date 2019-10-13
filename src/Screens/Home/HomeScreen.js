@@ -6,10 +6,12 @@ import images from '../../Assets';
 import Theme from '../../Config/Theme';
 
 function HomeScreen() {
-  const {styles, todos, setTodo, addTodo, todo} = useHomeScreen();
+  const {styles, todos, setTodo, addTodo, todo, deleteTodo} = useHomeScreen();
 
   function renderTodos({text}, index) {
-    return <TodoItem todo={text} key={index} />;
+    return (
+      <TodoItem todo={text} index={index} key={index} deleteTodo={deleteTodo} />
+    );
   }
 
   return (
