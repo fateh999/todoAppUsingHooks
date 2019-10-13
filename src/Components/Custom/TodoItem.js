@@ -4,7 +4,7 @@ import Theme from '../../Config/Theme';
 import {Spacer} from '..';
 import images from '../../Assets';
 
-function TodoItem({todo, deleteTodo}, index) {
+function TodoItem({todo, index, setEditTodo, deleteTodo}) {
   const styles = StyleSheet.create({
     todoItemStyle: {
       flexDirection: 'row',
@@ -13,7 +13,7 @@ function TodoItem({todo, deleteTodo}, index) {
       padding: 15,
     },
     todoStyle: {flex: 8, justifyContent: 'center'},
-    todoOptionsStyle: {flex: 2},
+    todoOptionsStyle: {flex: 2, flexDirection: 'row', alignItems: 'center'},
     buttonViewStyle: {
       justifyContent: 'center',
       alignItems: 'center',
@@ -22,6 +22,10 @@ function TodoItem({todo, deleteTodo}, index) {
 
   function deleteFunction() {
     deleteTodo(index);
+  }
+
+  function editFunction() {
+    setEditTodo(index);
   }
 
   return (
@@ -33,6 +37,12 @@ function TodoItem({todo, deleteTodo}, index) {
           </Text>
         </View>
         <View style={styles.todoOptionsStyle}>
+          <TouchableOpacity onPress={editFunction}>
+            <View style={styles.buttonViewStyle}>
+              <Image resizeMode={'contain'} source={images.edit}></Image>
+            </View>
+          </TouchableOpacity>
+          <Spacer horizontal size={5} />
           <TouchableOpacity onPress={deleteFunction}>
             <View style={styles.buttonViewStyle}>
               <Image resizeMode={'contain'} source={images.delete}></Image>
