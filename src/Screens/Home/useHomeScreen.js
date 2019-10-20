@@ -1,11 +1,20 @@
 import {StyleSheet} from 'react-native';
 import Theme from '../../Config/Theme';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import {DataStore} from '../../Utilities';
 
 function useHomeScreen() {
   const [todos, setTodos] = useState([]);
   const [todo, setTodo] = useState('');
   const [updateIndex, setUpdateIndex] = useState(-1);
+
+  useEffect(() => {
+    fetchTodos();
+  }, []);
+
+  useEffect(() => {
+    saveTodos();
+  }, [todos]);
 
   function addTodo() {
     if (!todo.trim()) {
@@ -42,6 +51,17 @@ function useHomeScreen() {
   function cancelEditTodo() {
     setUpdateIndex(-1);
     setTodo('');
+  }
+
+  function saveTodos() {
+    DataStore.setItem('todos', JSON.stringify(todos));
+  }
+
+  async function fetchTodos() {
+    const todosString = await DataStore.getItem('todos');
+    if (todosString) {
+      setTodos(JSON.parse(todosString));
+    }
   }
 
   const styles = StyleSheet.create({
