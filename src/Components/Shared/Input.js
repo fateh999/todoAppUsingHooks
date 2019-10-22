@@ -1,8 +1,8 @@
 import React from 'react';
-import {StyleSheet, TextInput} from 'react-native';
+import { StyleSheet, TextInput } from 'react-native';
 import Theme from '../../Config/Theme';
 
-function Input({style, onChangeText, value}) {
+function Input({ style, onChangeText, value, textInputProps }) {
   const styles = StyleSheet.create({
     textInputStyle: {
       height: 50,
@@ -12,15 +12,17 @@ function Input({style, onChangeText, value}) {
       paddingHorizontal: 15,
       borderRadius: 25,
       fontSize: 20,
-      ...style,
-    },
+      ...style
+    }
   });
 
   return (
     <TextInput
       value={value}
       onChangeText={onChangeText}
-      style={styles.textInputStyle}></TextInput>
+      style={styles.textInputStyle}
+      {...textInputProps}
+    ></TextInput>
   );
 }
 
