@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Theme from '../../Config/Theme';
-import FirebaseHandler from '../../Utilities/FirebaseHandler';
 
-function useLoginScreen({ navigation }) {
+function useSignupScreen({ navigation }) {
   const [user, setUser] = useState({
+    name: '',
     email: '',
-    password: ''
+    password: '',
+    cnfPassword: ''
   });
 
   const updateUser = (keyName, value) => {
@@ -14,16 +15,8 @@ function useLoginScreen({ navigation }) {
     setUser(tempUser);
   };
 
-  const loginHandle = async () => {
-    try {
-      const responseData = await FirebaseHandler.getInstance()
-        .auth()
-        .signInWithEmailAndPassword(user.email, user.password);
-      console.log('Response data', responseData);
-      navigation.navigate('home');
-    } catch (error) {
-      console.log('Error', error);
-    }
+  const loginHandle = () => {
+    navigation.navigate('home');
   };
 
   const styles = StyleSheet.create({
@@ -60,4 +53,4 @@ function useLoginScreen({ navigation }) {
   };
 }
 
-export default useLoginScreen;
+export default useSignupScreen;

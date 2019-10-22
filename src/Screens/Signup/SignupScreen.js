@@ -1,10 +1,10 @@
 import React from 'react';
-import useLoginScreen from './useLoginScreen';
+import useSignupScreen from './useSignupScreen';
 import { Container, Body, Input, Spacer } from '../../Components';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-function LoginScreen(props) {
-  const { user, updateUser, styles, loginHandle } = useLoginScreen(props);
+function SignupScreen(props) {
+  const { user, updateUser, styles, loginHandle } = useSignupScreen(props);
 
   return (
     <Container style={styles.containerStyle}>
@@ -12,6 +12,14 @@ function LoginScreen(props) {
         <Spacer size={50} />
         <Text style={styles.headingStyle}>TODO APP</Text>
         <Spacer size={50} />
+        <Input
+          value={user.name}
+          onChangeText={text => updateUser('name', text)}
+          textInputProps={{
+            placeholder: 'Name'
+          }}
+        />
+        <Spacer size={20} />
         <Input
           value={user.email}
           onChangeText={text => updateUser('email', text)}
@@ -29,10 +37,19 @@ function LoginScreen(props) {
             placeholder: 'Password'
           }}
         />
+        <Spacer size={20} />
+        <Input
+          value={user.cnfPassword}
+          onChangeText={text => updateUser('cnfPassword', text)}
+          textInputProps={{
+            secureTextEntry: true,
+            placeholder: 'Confirm Password'
+          }}
+        />
         <Spacer size={50} />
         <TouchableOpacity onPress={loginHandle}>
           <View style={styles.buttonStyle}>
-            <Text style={styles.buttonTextStyle}>Login</Text>
+            <Text style={styles.buttonTextStyle}>Signup</Text>
           </View>
         </TouchableOpacity>
       </Body>
@@ -40,4 +57,4 @@ function LoginScreen(props) {
   );
 }
 
-export default LoginScreen;
+export default SignupScreen;
