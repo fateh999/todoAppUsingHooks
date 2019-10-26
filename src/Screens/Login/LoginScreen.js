@@ -4,7 +4,9 @@ import { Container, Body, Input, Spacer } from '../../Components';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 function LoginScreen(props) {
-  const { user, updateUser, styles, loginHandle } = useLoginScreen(props);
+  const { user, updateUser, styles, loginHandle, goToSignup } = useLoginScreen(
+    props
+  );
 
   return (
     <Container style={styles.containerStyle}>
@@ -17,7 +19,8 @@ function LoginScreen(props) {
           onChangeText={text => updateUser('email', text)}
           textInputProps={{
             keyboardType: 'email-address',
-            placeholder: 'Email'
+            placeholder: 'Email',
+            autoCapitalize: 'none'
           }}
         />
         <Spacer size={20} />
@@ -35,6 +38,10 @@ function LoginScreen(props) {
             <Text style={styles.buttonTextStyle}>Login</Text>
           </View>
         </TouchableOpacity>
+        <Spacer size={50} />
+        <Text style={styles.linkStyle} onPress={goToSignup}>
+          Sign Up
+        </Text>
       </Body>
     </Container>
   );

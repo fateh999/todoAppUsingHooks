@@ -10,7 +10,6 @@ import {
 } from '../../Components';
 import { View, TouchableOpacity, Image, StatusBar, Text } from 'react-native';
 import images from '../../Assets';
-import Theme from '../../Config/Theme';
 
 function HomeScreen() {
   const {
@@ -22,7 +21,8 @@ function HomeScreen() {
     deleteTodo,
     setEditTodo,
     cancelEditTodo,
-    updateIndex
+    updateIndex,
+    logoutHandle
   } = useHomeScreen();
 
   function renderTodos({ text }, index) {
@@ -78,6 +78,15 @@ function HomeScreen() {
         <Spacer size={20} />
         {todos.map(renderTodos)}
       </Body>
+      <Spacer size={50} />
+      <View style={styles.logoutStyle}>
+        <TouchableOpacity onPress={logoutHandle}>
+          <View style={styles.buttonStyle}>
+            <Text style={styles.buttonTextStyle}>Logout</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+      <Spacer size={50} />
     </Container>
   );
 }

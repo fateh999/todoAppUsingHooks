@@ -4,7 +4,7 @@ import { Container, Body, Input, Spacer } from '../../Components';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 function SignupScreen(props) {
-  const { user, updateUser, styles, loginHandle } = useSignupScreen(props);
+  const { user, updateUser, styles, signupHandle } = useSignupScreen(props);
 
   return (
     <Container style={styles.containerStyle}>
@@ -47,7 +47,7 @@ function SignupScreen(props) {
           }}
         />
         <Spacer size={50} />
-        <TouchableOpacity onPress={loginHandle}>
+        <TouchableOpacity onPress={signupHandle}>
           <View style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>Signup</Text>
           </View>

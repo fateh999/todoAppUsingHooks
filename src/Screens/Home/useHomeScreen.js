@@ -1,7 +1,7 @@
-import { StyleSheet } from 'react-native';
 import Theme from '../../Config/Theme';
-import { useState, useEffect } from 'react';
-import { DataStore } from '../../Utilities';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { DataStore, FirebaseHandler } from '../../Utilities';
+import { StyleSheet } from 'react-native';
 
 function useHomeScreen() {
   const [todos, setTodos] = useState([]);
@@ -16,7 +16,7 @@ function useHomeScreen() {
     saveTodos();
   }, [todos]);
 
-  function addTodo() {
+  const addTodo = useCallback(() => {
     if (!todo.trim()) {
       return;
     }
@@ -33,64 +33,95 @@ function useHomeScreen() {
       setTodo('');
     }
     setUpdateIndex(-1);
-  }
+  }, [todo, todos]);
 
-  function deleteTodo(index) {
-    const tempTodos = [...todos];
-    tempTodos.splice(index, 1);
-    setTodos([...tempTodos]);
-    setUpdateIndex(-1);
-  }
+  const deleteTodo = useCallback(
+    index => {
+      const tempTodos = [...todos];
+      tempTodos.splice(index, 1);
+      setTodos([...tempTodos]);
+      setTodo('');
+      setUpdateIndex(-1);
+    },
+    [todos]
+  );
 
-  function setEditTodo(index) {
-    const tempTodo = todos[index];
-    setTodo(tempTodo.text);
-    setUpdateIndex(index);
-  }
+  const setEditTodo = useCallback(
+    index => {
+      const tempTodo = todos[index];
+      setTodo(tempTodo.text);
+      setUpdateIndex(index);
+    },
+    [todos]
+  );
 
-  function cancelEditTodo() {
+  const cancelEditTodo = useCallback(() => {
     setUpdateIndex(-1);
     setTodo('');
-  }
+  }, []);
 
-  function saveTodos() {
+  const saveTodos = useCallback(() => {
     DataStore.setItem('todos', JSON.stringify(todos));
-  }
+  }, [todos]);
 
-  async function fetchTodos() {
+  const fetchTodos = useCallback(async () => {
     const todosString = await DataStore.getItem('todos');
     if (todosString) {
       setTodos(JSON.parse(todosString));
     }
-  }
+  }, []);
 
-  const styles = StyleSheet.create({
-    bodyStyle: {
-      padding: 15
-    },
-    containerStyle: {
-      backgroundColor: Theme.dark,
-      paddingVertical: 15
-    },
-    rowStyle: {
-      flexDirection: 'row'
-    },
-    inputViewStyle: {
-      flex: 3.5
-    },
-    inputViewStyleExpanded: {
-      flex: 8
-    },
-    buttonViewStyle: {
-      flex: 1,
-      justifyContent: 'center'
-    },
-    cancelEditStyle: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center'
-    }
-  });
+  const logoutHandle = useCallback(() => {
+    FirebaseHandler.getInstance()
+      .auth()
+      .signOut();
+  }, []);
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        bodyStyle: {
+          padding: 25
+        },
+        containerStyle: {
+          backgroundColor: Theme.dark,
+          paddingVertical: 15
+        },
+        rowStyle: {
+          flexDirection: 'row'
+        },
+        inputViewStyle: {
+          flex: 3.5
+        },
+        inputViewStyleExpanded: {
+          flex: 8
+        },
+        buttonViewStyle: {
+          flex: 1,
+          justifyContent: 'center'
+        },
+        cancelEditStyle: {
+          flex: 1,
+          flexDirection: 'row',
+          alignItems: 'center'
+        },
+        buttonStyle: {
+          backgroundColor: Theme.primary,
+          height: 50,
+          borderRadius: 25,
+          justifyContent: 'center',
+          alignItems: 'center'
+        },
+        buttonTextStyle: {
+          color: Theme.white,
+          fontSize: 24
+        },
+        logoutStyle: {
+          paddingHorizontal: 50
+        }
+      }),
+    []
+  );
 
   return {
     styles,
@@ -101,7 +132,8 @@ function useHomeScreen() {
     deleteTodo,
     setEditTodo,
     updateIndex,
-    cancelEditTodo
+    cancelEditTodo,
+    logoutHandle
   };
 }
 
