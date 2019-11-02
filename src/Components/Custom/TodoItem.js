@@ -1,23 +1,23 @@
-import React, {Fragment} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native';
+import React, { Fragment } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import Theme from '../../Config/Theme';
-import {Spacer} from '..';
+import { Spacer } from '..';
 import images from '../../Assets';
 
-function TodoItem({todo, index, setEditTodo, deleteTodo}) {
+function TodoItem({ todo, index, setEditTodo, deleteTodo }) {
   const styles = StyleSheet.create({
     todoItemStyle: {
       flexDirection: 'row',
       minHeight: 70,
       backgroundColor: Theme.primary,
-      padding: 15,
+      padding: 15
     },
-    todoStyle: {flex: 8, justifyContent: 'center'},
-    todoOptionsStyle: {flex: 2, flexDirection: 'row', alignItems: 'center'},
+    todoStyle: { flex: 8, justifyContent: 'center' },
+    todoOptionsStyle: { flex: 2.5, flexDirection: 'row', alignItems: 'center' },
     buttonViewStyle: {
       justifyContent: 'center',
-      alignItems: 'center',
-    },
+      alignItems: 'center'
+    }
   });
 
   function deleteFunction() {
@@ -32,7 +32,7 @@ function TodoItem({todo, index, setEditTodo, deleteTodo}) {
     <Fragment>
       <View style={styles.todoItemStyle}>
         <View style={styles.todoStyle}>
-          <Text style={{color: Theme.white, fontSize: 20, margin: 0}}>
+          <Text style={{ color: Theme.white, fontSize: 20, margin: 0 }}>
             {todo}
           </Text>
         </View>

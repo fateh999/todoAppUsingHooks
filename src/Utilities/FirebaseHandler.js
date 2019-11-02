@@ -1,4 +1,5 @@
 import * as firebase from 'firebase';
+import 'firebase/firestore';
 import firebaseConfig from '../Config/firebaseConfig';
 
 class FirebaseHandler {
@@ -8,6 +9,10 @@ class FirebaseHandler {
 
   getInstance() {
     return firebase;
+  }
+
+  getDBInstance(path) {
+    return firebase.firestore().collection(path);
   }
 }
 

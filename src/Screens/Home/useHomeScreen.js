@@ -7,6 +7,7 @@ function useHomeScreen() {
   const [todos, setTodos] = useState([]);
   const [todo, setTodo] = useState('');
   const [updateIndex, setUpdateIndex] = useState(-1);
+  const db = useMemo(() => FirebaseHandler.getDBInstance('todos'), []);
 
   useEffect(() => {
     fetchTodos();
@@ -22,15 +23,18 @@ function useHomeScreen() {
     }
     if (updateIndex != -1) {
       const tempTodos = [...todos];
-      tempTodos[updateIndex].text = todo;
-      setTodos(tempTodos);
-    } else {
-      const newTodo = {
-        id: Date.now(),
+      const id = tempTodos[updateIndex].id;
+      const oldTodo = {
         text: todo
       };
-      setTodos([...todos, newTodo]);
       setTodo('');
+      db.doc(id).update(oldTodo);
+    } else {
+      const newTodo = {
+        text: todo
+      };
+      setTodo('');
+      db.add(newTodo);
     }
     setUpdateIndex(-1);
   }, [todo, todos]);
@@ -38,9 +42,9 @@ function useHomeScreen() {
   const deleteTodo = useCallback(
     index => {
       const tempTodos = [...todos];
-      tempTodos.splice(index, 1);
-      setTodos([...tempTodos]);
+      const id = tempTodos[index].id;
       setTodo('');
+      db.doc(id).delete();
       setUpdateIndex(-1);
     },
     [todos]
@@ -69,6 +73,16 @@ function useHomeScreen() {
     if (todosString) {
       setTodos(JSON.parse(todosString));
     }
+    db.onSnapshot(querySnapshot => {
+      const todosAll = [];
+      querySnapshot.forEach(doc => {
+        todosAll.push({
+          id: doc.id,
+          ...doc.data()
+        });
+      });
+      setTodos(todosAll);
+    });
   }, []);
 
   const logoutHandle = useCallback(() => {
@@ -91,7 +105,7 @@ function useHomeScreen() {
           flexDirection: 'row'
         },
         inputViewStyle: {
-          flex: 3.5
+          flex: 3.3
         },
         inputViewStyleExpanded: {
           flex: 8
