@@ -11,7 +11,7 @@ import {
 import { View, TouchableOpacity, Image, StatusBar, Text } from 'react-native';
 import images from '../../Assets';
 
-function HomeScreen() {
+function HomeScreen({ navigation }) {
   const {
     styles,
     todos,
@@ -23,7 +23,7 @@ function HomeScreen() {
     cancelEditTodo,
     updateIndex,
     logoutHandle
-  } = useHomeScreen();
+  } = useHomeScreen(navigation);
 
   function renderTodos({ text }, index) {
     return (

@@ -3,14 +3,19 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { DataStore, FirebaseHandler } from '../../Utilities';
 import { StyleSheet } from 'react-native';
 
-function useHomeScreen() {
+function useHomeScreen(navigation) {
   const [todos, setTodos] = useState([]);
   const [todo, setTodo] = useState('');
   const [updateIndex, setUpdateIndex] = useState(-1);
   const db = useMemo(() => FirebaseHandler.getDBInstance('todos'), []);
+  const userIdNav = navigation.getParam('userId');
 
   useEffect(() => {
     fetchTodos();
+    () => {
+      setTodos([]);
+      setTodo('');
+    };
   }, []);
 
   useEffect(() => {
@@ -23,15 +28,17 @@ function useHomeScreen() {
     }
     if (updateIndex != -1) {
       const tempTodos = [...todos];
-      const id = tempTodos[updateIndex].id;
+      const { id, userId } = tempTodos[updateIndex].id;
       const oldTodo = {
-        text: todo
+        text: todo,
+        userId
       };
       setTodo('');
       db.doc(id).update(oldTodo);
     } else {
       const newTodo = {
-        text: todo
+        text: todo,
+        userId: userIdNav
       };
       setTodo('');
       db.add(newTodo);
@@ -73,7 +80,7 @@ function useHomeScreen() {
     if (todosString) {
       setTodos(JSON.parse(todosString));
     }
-    db.onSnapshot(querySnapshot => {
+    db.where('userId', '==', userIdNav).onSnapshot(querySnapshot => {
       const todosAll = [];
       querySnapshot.forEach(doc => {
         todosAll.push({

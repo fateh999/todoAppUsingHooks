@@ -12,7 +12,7 @@ function App() {
       .onAuthStateChanged(user => {
         if (user) {
           console.log('Logged In');
-          NavigationService.navigate('home');
+          NavigationService.navigate('home', { userId: user.uid });
         } else {
           console.log('Not Logged In');
           NavigationService.navigate('login');
